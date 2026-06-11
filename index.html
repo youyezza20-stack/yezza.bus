@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مؤسسة يزه محمد لنقل المسافرين</title>
+
+  <!-- Google Fonts: Cairo for Arabic + Latin -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!--  NAVIGATION BAR                                  -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <span class="logo-icon">🚌</span>
+        <span class="logo-text">يزه محمد للنقل</span>
+      </div>
+      <div class="nav-links">
+        <button class="nav-btn active" onclick="showPage('schedule')">الجدول الأسبوعي</button>
+        <button class="nav-btn" onclick="showPage('stats')">الإحصائيات</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!--  HERO SECTION                                    -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <header class="hero" id="hero">
+    <!-- Background image overlay -->
+    <div class="hero-overlay"></div>
+
+    <!-- Hero content -->
+    <div class="hero-content">
+      <p class="hero-eyebrow">مرخصة ومعتمدة رسمياً</p>
+      <h1 class="hero-title">مؤسسة يزه محمد<br /><span class="hero-accent">لنقل المسافرين</span></h1>
+      <p class="hero-subtitle">تويوتا كوستر — خدمة نقل آمنة وموثوقة</p>
+    </div>
+
+    <!-- Live weekly summary bar -->
+    <div class="hero-stats-bar">
+      <div class="stat-item">
+        <span class="stat-label">دخل هذا الأسبوع</span>
+        <span class="stat-value" id="stat-week">—</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-label">إجمالي المداخيل</span>
+        <span class="stat-value" id="stat-total">—</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-label">أيام مسجّلة</span>
+        <span class="stat-value" id="stat-days">—</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!--  PAGE 1: WEEKLY SCHEDULE                         -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <main id="page-schedule" class="page active">
+    <div class="container">
+
+      <!-- Section header -->
+      <div class="section-header">
+        <h2 class="section-title">سجل المداخيل اليومية</h2>
+        <p class="section-sub">من 15 جوان 2026 إلى 15 جوان 2027</p>
+      </div>
+
+      <!-- Week navigator -->
+      <div class="week-nav">
+        <button class="week-arrow" id="btn-prev-week" onclick="changeWeek(-1)" title="الأسبوع السابق">&#8250;</button>
+        <div class="week-info">
+          <span class="week-label">الأسبوع</span>
+          <span class="week-number" id="week-number">1</span>
+          <span class="week-dates" id="week-dates">—</span>
+        </div>
+        <button class="week-arrow" id="btn-next-week" onclick="changeWeek(+1)" title="الأسبوع التالي">&#8249;</button>
+      </div>
+
+      <!-- Progress bar (week in year) -->
+      <div class="year-progress">
+        <div class="progress-label">
+          <span>بداية المدة</span>
+          <span id="progress-pct">0%</span>
+          <span>نهاية المدة</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- Daily income grid -->
+      <div class="days-grid" id="days-grid">
+        <!-- Filled by JS -->
+      </div>
+
+      <!-- Weekly summary card -->
+      <div class="week-summary-card">
+        <div class="summary-row">
+          <span class="summary-label">مجموع أيام هذا الأسبوع</span>
+          <span class="summary-amount" id="week-total-display">0.00 دج</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">متوسط اليوم</span>
+          <span class="summary-amount secondary" id="week-avg-display">0.00 دج</span>
+        </div>
+        <button class="save-btn" onclick="saveWeekData()">
+          <span class="save-icon">💾</span> حفظ البيانات
+        </button>
+      </div>
+
+      <!-- Save confirmation toast -->
+      <div class="toast" id="save-toast">✅ تم الحفظ بنجاح!</div>
+
+    </div>
+  </main>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!--  PAGE 2: STATISTICS & CHARTS                     -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <main id="page-stats" class="page">
+    <div class="container">
+
+      <!-- Section header -->
+      <div class="section-header">
+        <h2 class="section-title">الإحصائيات والمداخيل</h2>
+        <p class="section-sub">تحليل شامل لأداء الحافلة عبر الزمن</p>
+      </div>
+
+      <!-- KPI cards row -->
+      <div class="kpi-row" id="kpi-row">
+        <div class="kpi-card">
+          <span class="kpi-icon">📈</span>
+          <span class="kpi-label">إجمالي المداخيل</span>
+          <span class="kpi-val" id="kpi-total">0 دج</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-icon">📅</span>
+          <span class="kpi-label">أيام مسجّلة</span>
+          <span class="kpi-val" id="kpi-days">0 يوم</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-icon">⭐</span>
+          <span class="kpi-label">أفضل يوم</span>
+          <span class="kpi-val" id="kpi-best">— دج</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-icon">📊</span>
+          <span class="kpi-label">المتوسط اليومي</span>
+          <span class="kpi-val" id="kpi-avg">0 دج</span>
+        </div>
+      </div>
+
+      <!-- Chart view selector -->
+      <div class="chart-tabs">
+        <button class="chart-tab active" onclick="switchChart('weekly', this)">أسبوعي</button>
+        <button class="chart-tab" onclick="switchChart('monthly', this)">شهري</button>
+      </div>
+
+      <!-- Line chart card -->
+      <div class="chart-card">
+        <div class="chart-title-row">
+          <h3 class="chart-title" id="chart-title">منحنى المداخيل الأسبوعية</h3>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="income-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- Bar chart: best weeks -->
+      <div class="chart-card">
+        <div class="chart-title-row">
+          <h3 class="chart-title">مقارنة الأسابيع</h3>
+        </div>
+        <div class="chart-wrapper chart-wrapper--short">
+          <canvas id="bar-chart"></canvas>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!--  FOOTER                                          -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <footer class="footer">
+    <p>© 2026 مؤسسة يزه محمد لنقل المسافرين — جميع الحقوق محفوظة</p>
+  </footer>
+
+  <!-- Main JavaScript -->
+  <script src="app.js"></script>
+</body>
+</html>

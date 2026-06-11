@@ -1,0 +1,599 @@
+/* ════════════════════════════════════════════════════════
+   style.css — مؤسسة يزه محمد لنقل المسافرين
+   Design tokens: Navy #0f2744 | Gold #c9a84c | Light #f8f9fa
+   ════════════════════════════════════════════════════════ */
+
+/* ── Reset & Base ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:       #0f2744;
+  --navy-mid:   #1a3a5c;
+  --navy-light: #254d78;
+  --gold:       #c9a84c;
+  --gold-light: #e8c97a;
+  --gold-dark:  #a07c30;
+  --white:      #ffffff;
+  --off-white:  #f4f6f9;
+  --text-main:  #1e2a3a;
+  --text-muted: #5a6a7e;
+  --border:     #dde3ec;
+  --success:    #2ecc71;
+  --font:       'Cairo', sans-serif;
+  --radius:     12px;
+  --shadow-sm:  0 2px 8px rgba(15,39,68,.08);
+  --shadow-md:  0 6px 24px rgba(15,39,68,.14);
+  --shadow-lg:  0 12px 40px rgba(15,39,68,.20);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--off-white);
+  color: var(--text-main);
+  direction: rtl;
+  min-height: 100vh;
+}
+
+/* ── Navbar ───────────────────────────────────────────── */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--navy);
+  border-bottom: 2px solid var(--gold);
+  box-shadow: var(--shadow-md);
+}
+
+.nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--white);
+}
+
+.logo-icon { font-size: 1.5rem; }
+.logo-text  { font-size: 1rem; font-weight: 700; letter-spacing: .02em; }
+
+.nav-links { display: flex; gap: 8px; }
+
+.nav-btn {
+  background: transparent;
+  border: 1.5px solid rgba(201,168,76,.35);
+  color: rgba(255,255,255,.75);
+  padding: 7px 20px;
+  border-radius: 30px;
+  font-family: var(--font);
+  font-size: .875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+}
+
+/* ── Hero ─────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  height: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  /* Toyota Coaster bus background from Unsplash (free-to-use) */
+  background-image: url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=1400&auto=format&fit=crop&q=80');
+  background-size: cover;
+  background-position: center 40%;
+  background-repeat: no-repeat;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(15,39,68,.88) 0%,
+    rgba(15,39,68,.72) 50%,
+    rgba(10,25,50,.82) 100%
+  );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 24px;
+}
+
+.hero-eyebrow {
+  display: inline-block;
+  background: rgba(201,168,76,.18);
+  border: 1px solid rgba(201,168,76,.45);
+  color: var(--gold-light);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 4px 16px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.hero-title {
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+
+.hero-accent { color: var(--gold); }
+
+.hero-subtitle {
+  font-size: .95rem;
+  color: rgba(255,255,255,.65);
+  font-weight: 400;
+}
+
+/* Hero stats bar */
+.hero-stats-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  z-index: 3;
+  background: rgba(15,39,68,.92);
+  backdrop-filter: blur(12px);
+  border-top: 1.5px solid rgba(201,168,76,.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  padding: 14px 24px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 0 32px;
+}
+
+.stat-label {
+  font-size: .72rem;
+  color: rgba(255,255,255,.55);
+  font-weight: 400;
+  letter-spacing: .05em;
+}
+
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--gold);
+}
+
+.stat-divider {
+  width: 1px;
+  height: 36px;
+  background: rgba(201,168,76,.25);
+}
+
+/* ── Pages ────────────────────────────────────────────── */
+.page { display: none; padding: 40px 0 60px; }
+.page.active { display: block; }
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ── Section header ───────────────────────────────────── */
+.section-header { margin-bottom: 28px; }
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+.section-sub {
+  font-size: .875rem;
+  color: var(--text-muted);
+}
+
+/* ── Week Navigator ───────────────────────────────────── */
+.week-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--navy);
+  border-radius: var(--radius);
+  padding: 16px 24px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-md);
+}
+
+.week-arrow {
+  background: rgba(201,168,76,.15);
+  border: 1.5px solid rgba(201,168,76,.4);
+  color: var(--gold);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.week-arrow:hover { background: var(--gold); color: var(--navy); }
+.week-arrow:disabled { opacity: .35; cursor: not-allowed; }
+
+.week-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.week-label {
+  font-size: .7rem;
+  color: rgba(255,255,255,.5);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.week-number {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.week-dates {
+  font-size: .8rem;
+  color: rgba(255,255,255,.7);
+}
+
+/* ── Year progress ────────────────────────────────────── */
+.year-progress { margin-bottom: 24px; }
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: .72rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.progress-track {
+  height: 6px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--navy-mid), var(--gold));
+  border-radius: 99px;
+  transition: width .4s ease;
+  width: 0%;
+}
+
+/* ── Days Grid ────────────────────────────────────────── */
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.day-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  transition: box-shadow .2s, border-color .2s;
+  box-shadow: var(--shadow-sm);
+}
+
+.day-card:hover { box-shadow: var(--shadow-md); border-color: var(--gold); }
+
+.day-card.has-value { border-color: rgba(201,168,76,.5); background: #fffdf5; }
+
+.day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.day-name {
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.day-date {
+  font-size: .72rem;
+  color: var(--text-muted);
+  text-align: left;
+}
+
+.day-badge {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.day-card.has-value .day-badge { background: var(--gold); }
+
+/* Input wrapper */
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--off-white);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 0 10px;
+  transition: border-color .2s;
+}
+
+.input-group:focus-within { border-color: var(--gold); background: #fff; }
+
+.currency-tag {
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.day-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: var(--font);
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--navy);
+  padding: 9px 0;
+  text-align: right;
+  width: 100%;
+  min-width: 0;
+}
+
+.day-input:focus { outline: none; }
+.day-input::placeholder { color: var(--border); font-weight: 400; }
+
+/* ── Week Summary Card ────────────────────────────────── */
+.week-summary-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-top: 3px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-sm);
+}
+
+.summary-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 150px;
+}
+
+.summary-label { font-size: .78rem; color: var(--text-muted); font-weight: 400; }
+.summary-amount {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--navy);
+}
+.summary-amount.secondary { font-size: 1.1rem; color: var(--gold-dark); }
+
+/* Save button */
+.save-btn {
+  background: var(--gold);
+  border: none;
+  color: var(--navy);
+  font-family: var(--font);
+  font-size: .9rem;
+  font-weight: 800;
+  padding: 12px 28px;
+  border-radius: 30px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background .2s, transform .15s;
+  box-shadow: 0 4px 14px rgba(201,168,76,.35);
+  white-space: nowrap;
+}
+
+.save-btn:hover { background: var(--gold-light); transform: translateY(-1px); }
+.save-btn:active { transform: translateY(0); }
+.save-icon { font-size: 1rem; }
+
+/* ── Toast notification ───────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--navy);
+  color: var(--white);
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-size: .9rem;
+  font-weight: 600;
+  border: 1.5px solid var(--gold);
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s, transform .3s;
+  z-index: 999;
+  white-space: nowrap;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── KPI Cards ────────────────────────────────────────── */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.kpi-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow .2s;
+}
+
+.kpi-card:hover { box-shadow: var(--shadow-md); }
+
+.kpi-icon { font-size: 1.4rem; }
+.kpi-label { font-size: .78rem; color: var(--text-muted); font-weight: 400; }
+.kpi-val {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--navy);
+  word-break: break-all;
+}
+
+/* ── Chart tabs ───────────────────────────────────────── */
+.chart-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.chart-tab {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: .875rem;
+  font-weight: 600;
+  padding: 8px 22px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.chart-tab:hover { border-color: var(--navy); color: var(--navy); }
+.chart-tab.active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--gold);
+}
+
+/* ── Chart cards ──────────────────────────────────────── */
+.chart-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.chart-title-row { margin-bottom: 20px; }
+.chart-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.chart-wrapper { position: relative; height: 300px; }
+.chart-wrapper--short { height: 220px; }
+
+/* ── Footer ───────────────────────────────────────────── */
+.footer {
+  background: var(--navy);
+  color: rgba(255,255,255,.45);
+  text-align: center;
+  padding: 20px 24px;
+  font-size: .8rem;
+  border-top: 1px solid rgba(201,168,76,.2);
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE — Mobile (< 600px)
+   ══════════════════════════════════════════ */
+@media (max-width: 599px) {
+
+  .hero { height: 360px; }
+  .hero-title { font-size: 1.5rem; }
+
+  .hero-stats-bar {
+    gap: 0;
+    padding: 12px 8px;
+  }
+
+  .stat-item { padding: 0 12px; }
+  .stat-value { font-size: .95rem; }
+  .stat-label { font-size: .65rem; }
+
+  .week-nav { padding: 12px 14px; }
+  .week-number { font-size: 1.4rem; }
+
+  .days-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  .week-summary-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .save-btn { width: 100%; justify-content: center; }
+
+  .kpi-row { grid-template-columns: 1fr 1fr; }
+
+  .nav-links { gap: 6px; }
+  .nav-btn { padding: 6px 14px; font-size: .8rem; }
+  .logo-text { font-size: .88rem; }
+}
+
+@media (max-width: 380px) {
+  .days-grid { grid-template-columns: 1fr; }
+  .hero-stats-bar { flex-direction: column; gap: 8px; }
+  .stat-divider { display: none; }
+}
