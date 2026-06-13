@@ -1,206 +1,726 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>مؤسسة يزه محمد لنقل المسافرين</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;font-family:'Segoe UI',Tahoma,Arial,sans-serif;direction:rtl;background:#0b0f1a;color:#e8e0d0;min-height:100vh}
+    :root{
+      --gold:#c8a84b;
+      --gold-light:#e4c97e;
+      --gold-dark:#8a6f2e;
+      --bg:#0b0f1a;
+      --bg2:#131929;
+      --bg3:#1a2235;
+      --red:#e05555;
+      --green:#4caf7d;
+      --border:rgba(200,168,75,0.2);
+    }
 
-  <!-- Google Fonts: Cairo for Arabic + Latin -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+    /* NAV */
+    nav{
+      background:#0d1220;
+      border-bottom:1px solid var(--border);
+      padding:0 1.5rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      height:64px;
+      position:sticky;
+      top:0;
+      z-index:100;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .nav-brand{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:700;color:var(--gold)}
+    .nav-brand i{font-size:24px}
+    .nav-brand small{font-size:10px;color:#888;display:block;font-weight:400}
+    .nav-tabs{display:flex;gap:4px;flex-wrap:wrap}
+    .nav-tab{
+      padding:8px 14px;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:13px;
+      color:#888;
+      border:1px solid transparent;
+      background:transparent;
+      transition:all .2s;
+      white-space:nowrap;
+    }
+    .nav-tab.active{background:rgba(200,168,75,0.15);color:var(--gold);border-color:var(--border)}
+    .nav-tab:hover:not(.active){color:#ccc;background:rgba(255,255,255,0.05)}
 
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    /* PAGES */
+    .page{display:none;padding:1.5rem;max-width:960px;margin:0 auto}
+    .page.active{display:block}
+    h2{font-size:18px;font-weight:600;color:var(--gold);margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+    h3{font-size:14px;font-weight:600;color:#bbb;margin-bottom:.5rem}
 
-  <!-- Main stylesheet -->
-  <link rel="stylesheet" href="style.css" />
+    /* METRIC CARDS */
+    .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:1.5rem}
+    .metric{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:1rem;text-align:center}
+    .metric-label{font-size:11px;color:#888;margin-bottom:6px}
+    .metric-value{font-size:20px;font-weight:600;color:var(--gold)}
+    .metric-value.green{color:var(--green)}
+    .metric-value.red{color:var(--red)}
+
+    /* WEEK BLOCKS */
+    .week-block{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+    .week-header{
+      padding:.75rem 1rem;
+      background:rgba(200,168,75,0.06);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+      border-bottom:1px solid transparent;
+      transition:background .2s;
+    }
+    .week-header:hover{background:rgba(200,168,75,0.1)}
+    .week-header.open-h{border-bottom-color:var(--border)}
+    .week-title{font-size:13px;font-weight:600;color:var(--gold)}
+    .week-total{font-size:12px;color:#bbb}
+    .week-body{display:none;padding:.75rem 1rem}
+    .week-body.open{display:block}
+    .day-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(200,168,75,0.06)}
+    .day-row:last-child{border:none}
+    .day-name{font-size:12px;color:#999;width:65px;flex-shrink:0}
+    .day-date{font-size:10px;color:#555;width:80px;flex-shrink:0;direction:ltr;text-align:left}
+    .day-input{
+      flex:1;
+      background:var(--bg3);
+      border:1px solid rgba(200,168,75,0.2);
+      border-radius:6px;
+      padding:6px 8px;
+      color:#e8e0d0;
+      font-size:13px;
+      text-align:left;
+      direction:ltr;
+      max-width:160px;
+    }
+    .day-input:focus{outline:none;border-color:var(--gold)}
+    .day-unit{font-size:11px;color:#666;flex-shrink:0}
+    .save-btn{
+      margin-top:1rem;
+      padding:10px 24px;
+      background:var(--gold);
+      color:#0b0f1a;
+      border:none;
+      border-radius:8px;
+      font-size:13px;
+      font-weight:700;
+      cursor:pointer;
+      transition:background .2s;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .save-btn:hover{background:var(--gold-light)}
+    .toast{
+      position:fixed;
+      bottom:24px;
+      left:50%;
+      transform:translateX(-50%) translateY(80px);
+      background:#1a2235;
+      border:1px solid var(--green);
+      color:var(--green);
+      padding:10px 20px;
+      border-radius:10px;
+      font-size:13px;
+      transition:transform .3s;
+      z-index:999;
+      pointer-events:none;
+    }
+    .toast.show{transform:translateX(-50%) translateY(0)}
+
+    /* MONTHLY PAGE */
+    .chart-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1rem;margin-bottom:1.5rem}
+    .chart-title{font-size:13px;font-weight:600;color:var(--gold);margin-bottom:.75rem}
+    .legend{display:flex;gap:14px;margin-bottom:.75rem;flex-wrap:wrap}
+    .legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:#888}
+    .legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+    .bar-chart{display:flex;align-items:flex-end;gap:4px;height:130px;padding-bottom:22px;position:relative;overflow:hidden}
+    .bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%}
+    .bars-pair{display:flex;align-items:flex-end;gap:2px;height:calc(100% - 16px)}
+    .bar{border-radius:3px 3px 0 0;transition:height .4s;min-height:2px;position:relative}
+    .bar.income-bar{background:var(--green);opacity:0.85}
+    .bar.loss-bar{background:var(--red);opacity:0.85}
+    .bar-label{font-size:9px;color:#666;text-align:center;white-space:nowrap}
+    .month-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;margin-bottom:1.5rem}
+    .month-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:.875rem;transition:all .2s}
+    .month-card:hover{border-color:var(--gold);background:rgba(200,168,75,0.06)}
+    .month-name{font-size:13px;font-weight:600;color:#ccc;margin-bottom:8px}
+    .month-income{font-size:15px;font-weight:700;color:var(--green)}
+    .month-loss{font-size:11px;color:var(--red);margin-top:3px}
+    .month-net{font-size:11px;margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.06);font-weight:600}
+
+    /* LOSSES PAGE */
+    .loss-form{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:1.5rem}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+    .form-group{display:flex;flex-direction:column;gap:5px}
+    .form-label{font-size:11px;color:#888;font-weight:500}
+    .form-input,.form-select{
+      background:var(--bg3);
+      border:1px solid rgba(200,168,75,0.2);
+      border-radius:8px;
+      padding:8px 10px;
+      color:#e8e0d0;
+      font-size:13px;
+      width:100%;
+      transition:border-color .2s;
+    }
+    .form-input:focus,.form-select:focus{outline:none;border-color:var(--gold)}
+    .form-select option{background:#1a2235;color:#e8e0d0}
+    .btn-gold{
+      padding:9px 20px;
+      background:var(--gold);
+      color:#0b0f1a;
+      border:none;
+      border-radius:8px;
+      font-size:13px;
+      font-weight:700;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      transition:background .2s;
+    }
+    .btn-gold:hover{background:var(--gold-light)}
+    .filter-bar{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap}
+    .filter-btn{
+      padding:5px 12px;
+      border-radius:20px;
+      font-size:11px;
+      cursor:pointer;
+      border:1px solid rgba(200,168,75,0.15);
+      background:transparent;
+      color:#888;
+      transition:all .2s;
+    }
+    .filter-btn.active{background:rgba(200,168,75,0.15);color:var(--gold);border-color:var(--gold)}
+    .filter-btn:hover:not(.active){color:#ccc;border-color:rgba(200,168,75,0.3)}
+    .loss-list{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+    .loss-item{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:.8rem 1rem;
+      border-bottom:1px solid rgba(200,168,75,0.06);
+      transition:background .15s;
+    }
+    .loss-item:last-child{border:none}
+    .loss-item:hover{background:rgba(255,255,255,0.02)}
+    .loss-icon{
+      width:32px;height:32px;border-radius:8px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:16px;flex-shrink:0;
+    }
+    .loss-info{flex:1;min-width:0}
+    .loss-desc-text{font-size:13px;color:#ccc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .loss-meta{font-size:11px;color:#555;margin-top:2px}
+    .loss-amount{font-size:14px;font-weight:700;color:var(--red);flex-shrink:0;white-space:nowrap}
+    .loss-del{
+      background:none;border:none;color:#444;cursor:pointer;
+      font-size:16px;padding:4px 6px;border-radius:6px;flex-shrink:0;
+      transition:all .15s;
+    }
+    .loss-del:hover{color:var(--red);background:rgba(224,85,85,0.1)}
+    .empty-state{text-align:center;padding:2.5rem;color:#444;font-size:13px}
+    .empty-state i{font-size:36px;display:block;margin-bottom:10px;color:#333}
+    .section-divider{height:1px;background:var(--border);margin:1.5rem 0}
+
+    /* Scrollbar */
+    ::-webkit-scrollbar{width:5px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:rgba(200,168,75,0.2);border-radius:3px}
+    ::-webkit-scrollbar-thumb:hover{background:rgba(200,168,75,0.4)}
+
+    /* Mobile */
+    @media(max-width:600px){
+      nav{height:auto;padding:.75rem 1rem}
+      .page{padding:1rem}
+      .form-row{grid-template-columns:1fr}
+      .nav-brand small{display:none}
+      .metrics{grid-template-columns:1fr 1fr}
+    }
+  </style>
 </head>
 <body>
 
-  <!-- ═══════════════════════════════════════════════ -->
-  <!--  NAVIGATION BAR                                  -->
-  <!-- ═══════════════════════════════════════════════ -->
-  <nav class="navbar" id="navbar">
-    <div class="nav-inner">
-      <div class="nav-logo">
-        <span class="logo-icon">🚌</span>
-        <span class="logo-text">يزه محمد للنقل</span>
+<nav>
+  <div class="nav-brand">
+    <i class="ti ti-bus" aria-hidden="true"></i>
+    <div>
+      <div>يزه محمد للنقل</div>
+      <small>مرخصة ومعتمدة رسمياً</small>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('income', this)">
+      <i class="ti ti-calendar-week" aria-hidden="true"></i> المداخيل
+    </button>
+    <button class="nav-tab" onclick="showPage('monthly', this)">
+      <i class="ti ti-chart-bar" aria-hidden="true"></i> الأرباح الشهرية
+    </button>
+    <button class="nav-tab" onclick="showPage('losses', this)">
+      <i class="ti ti-trending-down" aria-hidden="true"></i> الخسائر
+    </button>
+  </div>
+</nav>
+
+<!-- PAGE 1: WEEKLY INCOME -->
+<div id="page-income" class="page active">
+  <h2><i class="ti ti-calendar-week" aria-hidden="true"></i> سجل المداخيل الأسبوعية</h2>
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-label">دخل هذا الأسبوع</div>
+      <div class="metric-value green" id="m-week">0 دج</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">إجمالي السنة</div>
+      <div class="metric-value" id="m-total">0 دج</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">أيام مسجّلة</div>
+      <div class="metric-value" id="m-days">0</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">متوسط اليوم</div>
+      <div class="metric-value" id="m-avg">0 دج</div>
+    </div>
+  </div>
+  <div id="weeks-container"></div>
+  <button class="save-btn" onclick="showToast()">
+    <i class="ti ti-device-floppy" aria-hidden="true"></i> حفظ البيانات
+  </button>
+</div>
+
+<!-- PAGE 2: MONTHLY PROFITS -->
+<div id="page-monthly" class="page">
+  <h2><i class="ti ti-chart-bar" aria-hidden="true"></i> الأرباح الشهرية</h2>
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-label">إجمالي المداخيل</div>
+      <div class="metric-value green" id="pm-income">0 دج</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">إجمالي الخسائر</div>
+      <div class="metric-value red" id="pm-losses">0 دج</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">صافي الربح</div>
+      <div class="metric-value" id="pm-net">0 دج</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">أفضل شهر</div>
+      <div class="metric-value" id="pm-best">—</div>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">المداخيل مقابل الخسائر (دج)</div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>المداخيل</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>الخسائر</div>
+    </div>
+    <div class="bar-chart" id="monthly-chart" role="img" aria-label="مخطط بياني للمداخيل والخسائر الشهرية"></div>
+  </div>
+
+  <h3 style="color:var(--gold);margin-bottom:.75rem;font-size:14px">تفاصيل الأشهر</h3>
+  <div class="month-grid" id="month-grid"></div>
+</div>
+
+<!-- PAGE 3: LOSSES -->
+<div id="page-losses" class="page">
+  <h2><i class="ti ti-trending-down" aria-hidden="true"></i> الخسائر والمصاريف</h2>
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-label">إجمالي الخسائر</div>
+      <div class="metric-value red" id="lm-total">0 دج</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">هذا الشهر</div>
+      <div class="metric-value red" id="lm-month">0 دج</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">عدد الإدخالات</div>
+      <div class="metric-value" id="lm-count">0</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">أكبر مصروف</div>
+      <div class="metric-value" id="lm-max">0 دج</div>
+    </div>
+  </div>
+
+  <div class="loss-form">
+    <h3 style="color:var(--gold);margin-bottom:.875rem;display:flex;align-items:center;gap:6px;font-size:14px">
+      <i class="ti ti-plus" aria-hidden="true"></i> إضافة مصروف / خسارة
+    </h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" for="l-date">التاريخ</label>
+        <input type="date" class="form-input" id="l-date">
       </div>
-      <div class="nav-links">
-        <button class="nav-btn active" onclick="showPage('schedule')">الجدول الأسبوعي</button>
-        <button class="nav-btn" onclick="showPage('stats')">الإحصائيات</button>
+      <div class="form-group">
+        <label class="form-label" for="l-cat">الفئة</label>
+        <select class="form-select" id="l-cat">
+          <option value="وقود">⛽ وقود</option>
+          <option value="صيانة">🔧 صيانة</option>
+          <option value="إطارات">🛞 إطارات</option>
+          <option value="غرامات">📋 غرامات</option>
+          <option value="تأمين">🛡️ تأمين</option>
+          <option value="رواتب">👷 رواتب</option>
+          <option value="أخرى">📦 أخرى</option>
+        </select>
       </div>
     </div>
-  </nav>
-
-  <!-- ═══════════════════════════════════════════════ -->
-  <!--  HERO SECTION                                    -->
-  <!-- ═══════════════════════════════════════════════ -->
-  <header class="hero" id="hero">
-    <!-- Background image overlay -->
-    <div class="hero-overlay"></div>
-
-    <!-- Hero content -->
-    <div class="hero-content">
-      <p class="hero-eyebrow">مرخصة ومعتمدة رسمياً</p>
-      <h1 class="hero-title">مؤسسة يزه محمد<br /><span class="hero-accent">لنقل المسافرين</span></h1>
-      <p class="hero-subtitle">تويوتا كوستر — خدمة نقل آمنة وموثوقة</p>
-    </div>
-
-    <!-- Live weekly summary bar -->
-    <div class="hero-stats-bar">
-      <div class="stat-item">
-        <span class="stat-label">دخل هذا الأسبوع</span>
-        <span class="stat-value" id="stat-week">—</span>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" for="l-amount">المبلغ (دج)</label>
+        <input type="number" class="form-input" id="l-amount" placeholder="0" min="0" style="direction:ltr">
       </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <span class="stat-label">إجمالي المداخيل</span>
-        <span class="stat-value" id="stat-total">—</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <span class="stat-label">أيام مسجّلة</span>
-        <span class="stat-value" id="stat-days">—</span>
+      <div class="form-group">
+        <label class="form-label" for="l-desc">الوصف (اختياري)</label>
+        <input type="text" class="form-input" id="l-desc" placeholder="تفاصيل المصروف...">
       </div>
     </div>
-  </header>
+    <button class="btn-gold" onclick="addLoss()">
+      <i class="ti ti-plus" aria-hidden="true"></i> إضافة
+    </button>
+  </div>
 
-  <!-- ═══════════════════════════════════════════════ -->
-  <!--  PAGE 1: WEEKLY SCHEDULE                         -->
-  <!-- ═══════════════════════════════════════════════ -->
-  <main id="page-schedule" class="page active">
-    <div class="container">
+  <div class="filter-bar" id="cat-filters"></div>
+  <div class="loss-list" id="loss-list">
+    <div class="empty-state">
+      <i class="ti ti-inbox" aria-hidden="true"></i>
+      لا توجد خسائر مسجّلة بعد
+    </div>
+  </div>
+</div>
 
-      <!-- Section header -->
-      <div class="section-header">
-        <h2 class="section-title">سجل المداخيل اليومية</h2>
-        <p class="section-sub">من 15 جوان 2026 إلى 15 جوان 2027</p>
-      </div>
+<div class="toast" id="toast">
+  <i class="ti ti-check" aria-hidden="true"></i> تم حفظ البيانات بنجاح!
+</div>
 
-      <!-- Week navigator -->
-      <div class="week-nav">
-        <button class="week-arrow" id="btn-prev-week" onclick="changeWeek(-1)" title="الأسبوع السابق">&#8250;</button>
-        <div class="week-info">
-          <span class="week-label">الأسبوع</span>
-          <span class="week-number" id="week-number">1</span>
-          <span class="week-dates" id="week-dates">—</span>
+<script>
+  const DAYS = ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  const MONTHS = ['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  const CAT_COLORS = {
+    'وقود':'#e05555','صيانة':'#c8a84b','إطارات':'#5588e0',
+    'غرامات':'#e07855','تأمين':'#9e55e0','رواتب':'#4caf7d','أخرى':'#888'
+  };
+  const CAT_ICONS = {
+    'وقود':'⛽','صيانة':'🔧','إطارات':'🛞',
+    'غرامات':'📋','تأمين':'🛡️','رواتب':'👷','أخرى':'📦'
+  };
+
+  const START = new Date('2026-06-15');
+  const END   = new Date('2027-06-15');
+
+  let state = { income: {}, losses: [] };
+  let activeFilter = 'all';
+
+  (function loadState() {
+    try {
+      const s = localStorage.getItem('yezza_bus_v3');
+      if (s) state = JSON.parse(s);
+    } catch(e) {}
+  })();
+
+  function save() {
+    try { localStorage.setItem('yezza_bus_v3', JSON.stringify(state)); } catch(e) {}
+  }
+
+  function fmt(n) {
+    return Math.round(n).toLocaleString('ar-DZ') + ' دج';
+  }
+
+  function showPage(id, btn) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    btn.classList.add('active');
+    if (id === 'monthly') renderMonthly();
+    if (id === 'losses') renderLosses();
+  }
+
+  /* ─── WEEKS ─── */
+  function getWeeks() {
+    const weeks = [];
+    let cur = new Date(START);
+    let wnum = 1;
+    while (cur < END) {
+      const days = [];
+      for (let d = 0; d < 7; d++) {
+        const dd = new Date(cur);
+        dd.setDate(dd.getDate() + d);
+        if (dd >= END) break;
+        days.push({ date: dd.toISOString().slice(0,10), name: DAYS[dd.getDay()] });
+      }
+      weeks.push({ id: 'w' + wnum, label: 'الأسبوع ' + wnum, days });
+      cur.setDate(cur.getDate() + 7);
+      wnum++;
+    }
+    return weeks;
+  }
+
+  function toggleWeek(id) {
+    const body = document.getElementById('wb-' + id);
+    const hdr  = document.getElementById('wh-' + id);
+    body.classList.toggle('open');
+    hdr.classList.toggle('open-h');
+  }
+
+  function onIncomeChange(date, val) {
+    const v = parseFloat(val) || 0;
+    if (v > 0) state.income[date] = v;
+    else delete state.income[date];
+    save();
+    updateWeekTotal(date);
+    updateIncomeMetrics();
+  }
+
+  function updateWeekTotal(date) {
+    const weeks = getWeeks();
+    const week  = weeks.find(w => w.days.some(d => d.date === date));
+    if (!week) return;
+    const total = week.days.reduce((s, d) => s + (state.income[d.date] || 0), 0);
+    const el = document.getElementById('wt-' + week.id);
+    if (el) el.textContent = fmt(total);
+  }
+
+  function updateIncomeMetrics() {
+    const vals  = Object.values(state.income);
+    const total = vals.reduce((a, b) => a + b, 0);
+    const today = new Date().toISOString().slice(0, 10);
+    const weeks = getWeeks();
+    const thisWeek = weeks.find(w => w.days.some(d => d.date === today));
+    const weekTotal = thisWeek
+      ? thisWeek.days.reduce((s, d) => s + (state.income[d.date] || 0), 0)
+      : 0;
+    document.getElementById('m-total').textContent = fmt(total);
+    document.getElementById('m-week').textContent  = fmt(weekTotal);
+    document.getElementById('m-days').textContent  = vals.length;
+    document.getElementById('m-avg').textContent   = vals.length ? fmt(total / vals.length) : '0 دج';
+  }
+
+  function buildWeeks() {
+    const container = document.getElementById('weeks-container');
+    const weeks = getWeeks();
+    container.innerHTML = '';
+    weeks.forEach((w, i) => {
+      const weekTotal = w.days.reduce((s, d) => s + (state.income[d.date] || 0), 0);
+      const div = document.createElement('div');
+      div.className = 'week-block';
+      div.innerHTML = `
+        <div class="week-header" id="wh-${w.id}" onclick="toggleWeek('${w.id}')">
+          <span class="week-title"><i class="ti ti-calendar-event" aria-hidden="true"></i> ${w.label}</span>
+          <span class="week-total" id="wt-${w.id}">${fmt(weekTotal)}</span>
         </div>
-        <button class="week-arrow" id="btn-next-week" onclick="changeWeek(+1)" title="الأسبوع التالي">&#8249;</button>
-      </div>
+        <div class="week-body" id="wb-${w.id}">
+          ${w.days.map(d => `
+            <div class="day-row">
+              <span class="day-name">${d.name}</span>
+              <span class="day-date">${d.date}</span>
+              <input
+                class="day-input"
+                type="number"
+                min="0"
+                step="100"
+                placeholder="0"
+                value="${state.income[d.date] || ''}"
+                onchange="onIncomeChange('${d.date}', this.value)"
+                oninput="onIncomeChange('${d.date}', this.value)"
+              >
+              <span class="day-unit">دج</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      container.appendChild(div);
+    });
+    // Open first week by default
+    if (weeks.length > 0) {
+      document.getElementById('wb-' + weeks[0].id).classList.add('open');
+      document.getElementById('wh-' + weeks[0].id).classList.add('open-h');
+    }
+    updateIncomeMetrics();
+  }
 
-      <!-- Progress bar (week in year) -->
-      <div class="year-progress">
-        <div class="progress-label">
-          <span>بداية المدة</span>
-          <span id="progress-pct">0%</span>
-          <span>نهاية المدة</span>
-        </div>
-        <div class="progress-track">
-          <div class="progress-fill" id="progress-fill"></div>
-        </div>
-      </div>
+  /* ─── MONTHLY ─── */
+  function getMonthlyData() {
+    const data = {};
+    for (let m = 0; m < 12; m++) data[m] = { month: MONTHS[m], income: 0, losses: 0 };
+    Object.entries(state.income).forEach(([d, v]) => {
+      const dt = new Date(d);
+      if (dt >= START && dt <= END) data[dt.getMonth()].income += v;
+    });
+    state.losses.forEach(l => {
+      const dt = new Date(l.date);
+      const m  = dt.getMonth();
+      if (data[m]) data[m].losses += parseFloat(l.amount) || 0;
+    });
+    return Object.values(data);
+  }
 
-      <!-- Daily income grid -->
-      <div class="days-grid" id="days-grid">
-        <!-- Filled by JS -->
-      </div>
+  function renderMonthly() {
+    const mdata = getMonthlyData();
+    const totalIncome = mdata.reduce((s, m) => s + m.income, 0);
+    const totalLosses = mdata.reduce((s, m) => s + m.losses, 0);
+    const net = totalIncome - totalLosses;
+    const bestMonth = mdata.reduce((best, m) =>
+      (m.income - m.losses) > (best.income - best.losses) ? m : best, mdata[0]);
 
-      <!-- Weekly summary card -->
-      <div class="week-summary-card">
-        <div class="summary-row">
-          <span class="summary-label">مجموع أيام هذا الأسبوع</span>
-          <span class="summary-amount" id="week-total-display">0.00 دج</span>
+    document.getElementById('pm-income').textContent = fmt(totalIncome);
+    document.getElementById('pm-losses').textContent = fmt(totalLosses);
+    const nm = document.getElementById('pm-net');
+    nm.textContent  = fmt(net);
+    nm.className    = 'metric-value ' + (net >= 0 ? 'green' : 'red');
+    document.getElementById('pm-best').textContent = bestMonth.income > 0 ? bestMonth.month : '—';
+
+    // Bar chart
+    const maxVal = Math.max(...mdata.map(m => Math.max(m.income, m.losses)), 1);
+    const chart  = document.getElementById('monthly-chart');
+    chart.innerHTML = mdata.map(m => {
+      const ih = Math.max(Math.round((m.income / maxVal) * 95), m.income > 0 ? 3 : 0);
+      const lh = Math.max(Math.round((m.losses / maxVal) * 95), m.losses > 0 ? 3 : 0);
+      return `
+        <div class="bar-wrap">
+          <div class="bars-pair">
+            <div class="bar income-bar" style="height:${ih}px;width:12px"></div>
+            <div class="bar loss-bar"   style="height:${lh}px;width:12px"></div>
+          </div>
+          <span class="bar-label">${m.month.slice(0,3)}</span>
         </div>
-        <div class="summary-row">
-          <span class="summary-label">متوسط اليوم</span>
-          <span class="summary-amount secondary" id="week-avg-display">0.00 دج</span>
+      `;
+    }).join('');
+
+    // Month grid
+    const grid = document.getElementById('month-grid');
+    grid.innerHTML = mdata.map(m => {
+      const netM = m.income - m.losses;
+      return `
+        <div class="month-card">
+          <div class="month-name">${m.month}</div>
+          <div class="month-income">${fmt(m.income)}</div>
+          <div class="month-loss">خسائر: ${fmt(m.losses)}</div>
+          <div class="month-net" style="color:${netM >= 0 ? 'var(--green)' : 'var(--red)'}">
+            صافي: ${fmt(netM)}
+          </div>
         </div>
-        <button class="save-btn" onclick="saveWeekData()">
-          <span class="save-icon">💾</span> حفظ البيانات
+      `;
+    }).join('');
+  }
+
+  /* ─── LOSSES ─── */
+  function addLoss() {
+    const date   = document.getElementById('l-date').value;
+    const cat    = document.getElementById('l-cat').value;
+    const amount = parseFloat(document.getElementById('l-amount').value) || 0;
+    const desc   = document.getElementById('l-desc').value.trim();
+    if (!date || !amount) { alert('يرجى تعبئة التاريخ والمبلغ'); return; }
+    state.losses.push({ id: Date.now(), date, cat, amount, desc });
+    save();
+    document.getElementById('l-amount').value = '';
+    document.getElementById('l-desc').value   = '';
+    showToast('تم إضافة المصروف بنجاح!');
+    renderLosses();
+  }
+
+  function deleteLoss(id) {
+    if (!confirm('هل تريد حذف هذا الإدخال؟')) return;
+    state.losses = state.losses.filter(l => l.id !== id);
+    save();
+    renderLosses();
+  }
+
+  function setFilter(f) {
+    activeFilter = f;
+    renderLosses();
+  }
+
+  function renderLosses() {
+    const filtered = activeFilter === 'all'
+      ? state.losses
+      : state.losses.filter(l => l.cat === activeFilter);
+    const sorted = [...filtered].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // Metrics
+    const total      = state.losses.reduce((s, l) => s + (parseFloat(l.amount) || 0), 0);
+    const now        = new Date();
+    const thisMonth  = state.losses.filter(l => {
+      const d = new Date(l.date);
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    });
+    const monthTotal = thisMonth.reduce((s, l) => s + (parseFloat(l.amount) || 0), 0);
+    const maxL       = state.losses.length
+      ? Math.max(...state.losses.map(l => parseFloat(l.amount) || 0)) : 0;
+
+    document.getElementById('lm-total').textContent = fmt(total);
+    document.getElementById('lm-month').textContent = fmt(monthTotal);
+    document.getElementById('lm-count').textContent = state.losses.length;
+    document.getElementById('lm-max').textContent   = fmt(maxL);
+
+    // Filter buttons
+    const cats = ['all', ...new Set(state.losses.map(l => l.cat))];
+    const filterBar = document.getElementById('cat-filters');
+    filterBar.innerHTML = cats.map(c => `
+      <button class="filter-btn${c === activeFilter ? ' active' : ''}" onclick="setFilter('${c}')">
+        ${c === 'all' ? 'الكل' : (CAT_ICONS[c] || '📦') + ' ' + c}
+      </button>
+    `).join('');
+
+    // List
+    const list = document.getElementById('loss-list');
+    if (!sorted.length) {
+      list.innerHTML = `
+        <div class="empty-state">
+          <i class="ti ti-inbox" aria-hidden="true"></i>
+          ${activeFilter === 'all' ? 'لا توجد خسائر مسجّلة بعد' : 'لا توجد نتائج في هذه الفئة'}
+        </div>`;
+      return;
+    }
+    list.innerHTML = sorted.map(l => `
+      <div class="loss-item">
+        <div class="loss-icon" style="background:${(CAT_COLORS[l.cat]||'#888')}22">
+          ${CAT_ICONS[l.cat] || '📦'}
+        </div>
+        <div class="loss-info">
+          <div class="loss-desc-text">${l.desc || l.cat}</div>
+          <div class="loss-meta">${l.cat} · ${l.date}</div>
+        </div>
+        <div class="loss-amount">- ${fmt(parseFloat(l.amount))}</div>
+        <button class="loss-del" onclick="deleteLoss(${l.id})" aria-label="حذف">
+          <i class="ti ti-trash" aria-hidden="true"></i>
         </button>
       </div>
+    `).join('');
+  }
 
-      <!-- Save confirmation toast -->
-      <div class="toast" id="save-toast">✅ تم الحفظ بنجاح!</div>
+  /* ─── TOAST ─── */
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    if (msg) t.innerHTML = '<i class="ti ti-check" aria-hidden="true"></i> ' + msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
 
-    </div>
-  </main>
+  /* ─── INIT ─── */
+  function init() {
+    document.getElementById('l-date').value = new Date().toISOString().slice(0, 10);
+    buildWeeks();
+    renderLosses();
+  }
 
-  <!-- ═══════════════════════════════════════════════ -->
-  <!--  PAGE 2: STATISTICS & CHARTS                     -->
-  <!-- ═══════════════════════════════════════════════ -->
-  <main id="page-stats" class="page">
-    <div class="container">
-
-      <!-- Section header -->
-      <div class="section-header">
-        <h2 class="section-title">الإحصائيات والمداخيل</h2>
-        <p class="section-sub">تحليل شامل لأداء الحافلة عبر الزمن</p>
-      </div>
-
-      <!-- KPI cards row -->
-      <div class="kpi-row" id="kpi-row">
-        <div class="kpi-card">
-          <span class="kpi-icon">📈</span>
-          <span class="kpi-label">إجمالي المداخيل</span>
-          <span class="kpi-val" id="kpi-total">0 دج</span>
-        </div>
-        <div class="kpi-card">
-          <span class="kpi-icon">📅</span>
-          <span class="kpi-label">أيام مسجّلة</span>
-          <span class="kpi-val" id="kpi-days">0 يوم</span>
-        </div>
-        <div class="kpi-card">
-          <span class="kpi-icon">⭐</span>
-          <span class="kpi-label">أفضل يوم</span>
-          <span class="kpi-val" id="kpi-best">— دج</span>
-        </div>
-        <div class="kpi-card">
-          <span class="kpi-icon">📊</span>
-          <span class="kpi-label">المتوسط اليومي</span>
-          <span class="kpi-val" id="kpi-avg">0 دج</span>
-        </div>
-      </div>
-
-      <!-- Chart view selector -->
-      <div class="chart-tabs">
-        <button class="chart-tab active" onclick="switchChart('weekly', this)">أسبوعي</button>
-        <button class="chart-tab" onclick="switchChart('monthly', this)">شهري</button>
-      </div>
-
-      <!-- Line chart card -->
-      <div class="chart-card">
-        <div class="chart-title-row">
-          <h3 class="chart-title" id="chart-title">منحنى المداخيل الأسبوعية</h3>
-        </div>
-        <div class="chart-wrapper">
-          <canvas id="income-chart"></canvas>
-        </div>
-      </div>
-
-      <!-- Bar chart: best weeks -->
-      <div class="chart-card">
-        <div class="chart-title-row">
-          <h3 class="chart-title">مقارنة الأسابيع</h3>
-        </div>
-        <div class="chart-wrapper chart-wrapper--short">
-          <canvas id="bar-chart"></canvas>
-        </div>
-      </div>
-
-    </div>
-  </main>
-
-  <!-- ═══════════════════════════════════════════════ -->
-  <!--  FOOTER                                          -->
-  <!-- ═══════════════════════════════════════════════ -->
-  <footer class="footer">
-    <p>© 2026 مؤسسة يزه محمد لنقل المسافرين — جميع الحقوق محفوظة</p>
-  </footer>
-
-  <!-- Main JavaScript -->
-  <script src="app.js"></script>
+  init();
+</script>
 </body>
 </html>
+ 
+
+     
+        
+
